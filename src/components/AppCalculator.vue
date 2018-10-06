@@ -17,24 +17,27 @@
           <br />
           <label for="length">Term length</label>
           <select name="length" v-model="length">
-                    <option value="12">12 months</option>
-                    <option value="24">24 months</option>
-                    <option value="36">36 months</option>
-                    <option value="48">48 months</option>
-                    <option value="60" selected>60 months</option>
-                    <option value="72">72 months</option>
-                    <option value="84">84 months</option>
-          </select>
+                      <option value="12">12 months</option>
+                      <option value="24">24 months</option>
+                      <option value="36">36 months</option>
+                      <option value="48">48 months</option>
+                      <option value="60" selected>60 months</option>
+                      <option value="72">72 months</option>
+                      <option value="84">84 months</option>
+            </select>
           <label for="rate">Rate</label>
           <input type="number" name="rate" v-model.number="rate" />
         </form>
         <div class="payment">{{ totalPayment }}</div>
+        <div>{{sampleCal()}}</div>
+
       </div>
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
+  import * as tf from '@tensorflow/tfjs'
   export default {
     name: 'AppCalulator',
     data() {
@@ -55,6 +58,35 @@
         var i = Math.pow((1 + r), n);
         return (p * r * i) / (i - 1) || 0;
       },
+    },
+    methods: {
+      sampleCal() {
+        // Define a model for linear regression.
+        const model = tf.sequential();
+        model.add(tf.layers.dense({
+          units: 1,
+          inputShape: [1]
+        }));
+
+        // Prepare the model for training: Specify the loss and the optimizer.
+        model.compile({
+          loss: 'meanSquaredError',
+          optimizer: 'sgd'
+        });
+
+        // Generate some synthetic data for training.
+        const xs = tf.tensor2d([1, 2, 3, 4], [4, 1]);
+        const ys = tf.tensor2d([1, 3, 5, 7], [4, 1]);
+
+        // Train the model using the data.
+        model.fit(xs, ys, {
+          epochs: 10
+        }).then(() => {
+          // Use the model to do inference on a data point the model hasn't seen before:
+          model.predict(tf.tensor2d([5], [1, 1])).print();
+        });
+
+      }
     }
   }
 </script>
@@ -78,12 +110,10 @@ body {
   justify-content: center;
   padding-top: 12px;
   transition: all 0.3s ease-in;
-
   @media (max-width: 512px) {
     padding: 18px;
     transition: all 0.3s ease-in;
   }
-
   @media (max-width: 360px) {
     padding: 16px;
     transition: all 0.3s ease-in;
@@ -110,12 +140,10 @@ p {
   box-shadow: 2px 2px 96px #111;
   border-radius: 8px;
   transition: all 0.3s ease-in;
-
   @media (max-width: 512px) {
     padding: 32px;
     transition: all 0.3s ease-in;
   }
-
   @media (max-width: 360px) {
     padding: 16px;
     transition: all 0.3s ease-in;
@@ -142,7 +170,6 @@ select {
   font-size: 24px;
   padding: 0 16px;
   margin-bottom: 24px;
-
   &:focus {
     background-color: #fff;
     color: #3200ff;
@@ -163,12 +190,10 @@ input[type="number"]::-webkit-outer-spin-button {
   text-align: center;
   font-weight: bold;
   transition: all 0.3s ease-in;
-
   @media (max-width: 512px) {
     font-size: 40px;
     transition: all 0.3s ease-in;
   }
-
   @media (max-width: 400px) {
     font-size: 32px;
     transition: all 0.3s ease-in;

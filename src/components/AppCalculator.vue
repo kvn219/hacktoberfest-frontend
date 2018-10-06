@@ -5,7 +5,7 @@
         <img alt="Vue logo" src="../assets/logo.png">
         <form action="">
           <h1>The Car-culator</h1>
-          <p>Discover your monthly car payment</p>
+          <p>Discover your monthly car payment.</p>
           <label for="price">Purchase price</label>
           <input type="number" name="price" class="currency" v-model.number="price" />
           <br />
@@ -159,7 +159,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .payment {
   color: #000;
-  font-size: 48px;
+  font-size: 24px;
   text-align: center;
   font-weight: bold;
   transition: all 0.3s ease-in;

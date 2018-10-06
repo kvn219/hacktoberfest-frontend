@@ -12,7 +12,6 @@
           <label for="down-payment">Down payment</label>
           <input type="number" name="down-payment" class="currency" v-model.number="downPayment" />
           <br />
-
           <label for="trade-in">Trade-in value</label>
           <input type="number" name="trade-in" class="currency" v-model.number="tradeIn" />
           <br />
@@ -26,11 +25,11 @@
                     <option value="60" selected>60 months</option>
                     <option value="72">72 months</option>
                     <option value="84">84 months</option>
-                </select>
+          </select>
           <label for="rate">Rate</label>
           <input type="number" name="rate" v-model.number="rate" />
         </form>
-        <div class="payment">{{ calcPayment }} / month</div>
+        <div class="payment">{{ totalPayment }}</div>
       </div>
     </div>
     </div>
@@ -50,21 +49,14 @@
       }
     },
     computed: {
-      calcPayment(e) {
+      totalPayment(e) {
         var p = this.price - this.downPayment - this.tradeIn;
         var r = this.rate / 1200;
         var n = this.length;
         var i = Math.pow((1 + r), n);
         var payment = (p * r * i) / (i - 1) || 0;
-        return this.currencyFormat(payment);
+        return payment;
       },
-      numFormat(e) {
-        e.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
-        return e
-      },
-      currencyFormat(num) {
-        return "$" + num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
-      }
     }
   }
 </script>

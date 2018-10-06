@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="appCalculator">
     <div id="calculator">
       <div class="container">
         <img alt="Vue logo" src="../assets/logo.png">
@@ -15,7 +15,6 @@
           <label for="trade-in">Trade-in value</label>
           <input type="number" name="trade-in" class="currency" v-model.number="tradeIn" />
           <br />
-
           <label for="length">Term length</label>
           <select name="length" v-model="length">
                     <option value="12">12 months</option>
@@ -37,7 +36,7 @@
 
 <script>
   export default {
-    name: 'HelloWorld',
+    name: 'AppCalulator',
     data() {
       return {
         price: '',
@@ -49,19 +48,17 @@
       }
     },
     computed: {
-      totalPayment(e) {
+      totalPayment() {
         var p = this.price - this.downPayment - this.tradeIn;
         var r = this.rate / 1200;
         var n = this.length;
         var i = Math.pow((1 + r), n);
-        var payment = (p * r * i) / (i - 1) || 0;
-        return payment;
+        return (p * r * i) / (i - 1) || 0;
       },
     }
   }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 * {
   box-sizing: border-box;

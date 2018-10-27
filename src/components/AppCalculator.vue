@@ -4,7 +4,7 @@
       <div class="container">
         <img alt="Vue logo" src="../assets/logo.png">
         <form action="">
-          <h1>The Car-culator</h1>
+          <h1>Hacktober Housefest</h1>
           <p>Discover your monthly car payment.</p>
           <label for="price">Purchase price</label>
           <input type="number" name="price" class="currency" v-model.number="price" />

@@ -9,16 +9,16 @@
         <form action="">
 
           <h1>House Calculator</h1>
-          <p>Discover your monthly car payment.</p>
-          <label for="price"># of Rooms</label>
-          <input type="number" name="price" class="currency" v-model.number="price" />
+          <p>Estimated price.</p>
+          <label for="rooms"># of Rooms</label>
+          <input type="number" name="rooms" v-model.number="numRooms" />
           <br />
-          <label for="down-payment">Square Footage</label>
-          <input type="number" name="down-payment" class="currency" v-model.number="downPayment" />
+          <label for="sqaure-footage">Square Footage</label>
+          <input type="number" name="sqaure-footage" v-model.number="sqaureFootage" />
           <br />
         </form>
-        <div class="payment">Predicted House Price: {{ totalPayment }}</div>
-        <div>{{sampleCal()}}</div>
+        <div class="price">Predicted House Price: {{ price }}</div>
+        <div>{{foo()}}</div>
 
       </div>
     </div>
@@ -32,24 +32,13 @@
     data() {
       return {
         price: '',
-        downPayment: '',
-        tradeIn: '',
-        length: '60',
-        rate: '',
-        calcPayment: ''
+        squareFootage: '',
+        numRooms: ''
       }
     },
-    computed: {
-      totalPayment() {
-        var p = this.price - this.downPayment - this.tradeIn;
-        var r = this.rate / 1200;
-        var n = this.length;
-        var i = Math.pow((1 + r), n);
-        return (p * r * i) / (i - 1) || 0;
-      },
-    },
+    computed: {},
     methods: {
-      sampleCal() {
+      foo() {
         // Define a model for linear regression.
         const model = tf.sequential();
         model.add(tf.layers.dense({
@@ -64,15 +53,15 @@
         });
 
         // Generate some synthetic data for training.
-        const xs = tf.tensor2d([1, 2, 3, 4], [4, 1]);
-        const ys = tf.tensor2d([1, 3, 5, 7], [4, 1]);
+        const xs = tf.tensor2d([[1, 2, 3, 4], [1, 2, 3, 4]], [4, 1]);
+        const ys = tf.tensor2d([[1, 3, 5, 7], [1, 2, 3, 4]], [4, 1]);
 
         // Train the model using the data.
         model.fit(xs, ys, {
           epochs: 10
         }).then(() => {
           // Use the model to do inference on a data point the model hasn't seen before:
-          model.predict(tf.tensor2d([5], [1, 1])).print();
+          model.predict(tf.tensor2d([[5], [1]], [1, 1])).print();
         });
 
       }
@@ -122,13 +111,13 @@ p {
 }
 
 .tf {
-    height: 170px;
-    width: 170px;
+  height: 170px;
+  width: 170px;
 }
 
 .image-container {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .container {

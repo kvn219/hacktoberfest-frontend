@@ -1,8 +1,13 @@
 # Hacktoberfest
 Demo: https://kvn219.github.io/hacktoberfest
-
+Vue and Tensorflow practice
 
 ## Getting Started
 ```
-sh deploy.sh
+npm install
+```
+
+## Run Vue App
+```
+npm run serve
 ```

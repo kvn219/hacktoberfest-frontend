@@ -31,7 +31,7 @@
     name: 'AppCalulator',
     data() {
       return {
-        price: '',
+        price: 0,
         squareFootage: '',
         numRooms: ''
       }
@@ -42,7 +42,11 @@
         return tf.tidy(()=>{
           const a = tf.tensor([Number.parseInt(numRooms)])
           const b = tf.variable(tf.scalar(Number.parseInt(squareFootage)))
-          return a.mul(b);
+          const results = a.mul(b);
+          results.data().then(results => {
+            // console.log(results[0])
+            this.price = results[0]
+          })
       });
     }
   }

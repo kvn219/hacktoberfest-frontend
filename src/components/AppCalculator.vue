@@ -2,33 +2,21 @@
   <div class="appCalculator">
     <div id="calculator">
       <div class="container">
-        <img alt="Vue logo" src="../assets/logo.png">
+          <div class="image-container">
+            <img alt="Vue logo" src="../assets/logo.png">
+            <img alt="" src="../assets/tf_logo.svg.png" class="tf">
+          </div>
         <form action="">
-          <h1>The Car-culator</h1>
+          <h1>House Calculator</h1>
           <p>Discover your monthly car payment.</p>
-          <label for="price">Purchase price</label>
+          <label for="price"># of Rooms</label>
           <input type="number" name="price" class="currency" v-model.number="price" />
           <br />
-          <label for="down-payment">Down payment</label>
+          <label for="down-payment">Square Footage</label>
           <input type="number" name="down-payment" class="currency" v-model.number="downPayment" />
           <br />
-          <label for="trade-in">Trade-in value</label>
-          <input type="number" name="trade-in" class="currency" v-model.number="tradeIn" />
-          <br />
-          <label for="length">Term length</label>
-          <select name="length" v-model="length">
-                      <option value="12">12 months</option>
-                      <option value="24">24 months</option>
-                      <option value="36">36 months</option>
-                      <option value="48">48 months</option>
-                      <option value="60" selected>60 months</option>
-                      <option value="72">72 months</option>
-                      <option value="84">84 months</option>
-            </select>
-          <label for="rate">Rate</label>
-          <input type="number" name="rate" v-model.number="rate" />
         </form>
-        <div class="payment">{{ totalPayment }}</div>
+        <div class="payment">Predicted House Price: {{ totalPayment }}</div>
         <div>{{sampleCal()}}</div>
 
       </div>
@@ -130,6 +118,16 @@ p {
   text-align: center;
   margin-top: 0;
   margin-bottom: 24px;
+}
+
+.tf {
+    height: 170px;
+    width: 170px;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
 }
 
 .container {

@@ -14,11 +14,11 @@
           <input type="number" name="rooms" v-model.number="numRooms" />
           <br />
           <label for="sqaure-footage">Square Footage</label>
-          <input type="number" name="sqaure-footage" v-model.number="sqaureFootage" />
+          <input type="number" name="sqaure-footage" v-model.number="squareFootage" />
           <br />
         </form>
         <div class="price">Predicted House Price: {{ price }}</div>
-        <div>{{foo()}}</div>
+        <div>{{foo(this.numRooms, this.squareFootage)}}</div>
 
       </div>
     </div>
@@ -38,35 +38,15 @@
     },
     computed: {},
     methods: {
-      foo() {
-        // Define a model for linear regression.
-        const model = tf.sequential();
-        model.add(tf.layers.dense({
-          units: 1,
-          inputShape: [1]
-        }));
-
-        // Prepare the model for training: Specify the loss and the optimizer.
-        model.compile({
-          loss: 'meanSquaredError',
-          optimizer: 'sgd'
-        });
-
-        // Generate some synthetic data for training.
-        const xs = tf.tensor2d([[1, 2, 3, 4], [1, 2, 3, 4]], [4, 1]);
-        const ys = tf.tensor2d([[1, 3, 5, 7], [1, 2, 3, 4]], [4, 1]);
-
-        // Train the model using the data.
-        model.fit(xs, ys, {
-          epochs: 10
-        }).then(() => {
-          // Use the model to do inference on a data point the model hasn't seen before:
-          model.predict(tf.tensor2d([[5], [1]], [1, 1])).print();
-        });
-
-      }
+      foo(numRooms, squareFootage) {
+        return tf.tidy(()=>{
+          const a = tf.tensor([Number.parseInt(numRooms)])
+          const b = tf.variable(tf.scalar(Number.parseInt(squareFootage)))
+          return a.mul(b);
+      });
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

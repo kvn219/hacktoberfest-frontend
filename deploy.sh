@@ -13,6 +13,6 @@ git init
 git add -A
 git commit -m 'deploy'
 
-git push -f git@github.com:kvn219/menu.git master:gh-pages
+git push -f git@github.com:kvn219/hacktoberfest-frontend.git master:gh-pages
 
 cd -

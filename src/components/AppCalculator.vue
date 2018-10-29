@@ -2,14 +2,14 @@
   <div class="appCalculator">
     <div id="calculator">
       <div class="container">
-          <div class="image-container">
-            <img alt="Vue logo" src="../assets/logo.png">
-            <img alt="" src="../assets/tf_logo.svg.png" class="tf">
-          </div>
+        <div class="image-container">
+          <img src="../assets/logo.png">
+          <img class="tf_logo" src="../assets/tf_logo.svg.png">
+        </div>
         <form action="">
 
           <h1>House Calculator</h1>
-          <p>Estimated price.</p>
+          <button @click="nux">Button</button>
           <label for="rooms"># of Rooms</label>
           <input type="number" name="rooms" v-model.number="numRooms" />
           <br />
@@ -19,7 +19,8 @@
         </form>
         <div class="price">Predicted House Price: {{ price }}</div>
         <div>{{foo(this.numRooms, this.squareFootage)}}</div>
-
+        <div class="price">TF Predicted House Price: {{ predictedPrice }}</div>
+        <!-- <div>{{bar(this.numRooms, this.squareFootage)}}</div> -->
       </div>
     </div>
   </div>
@@ -32,25 +33,67 @@
     data() {
       return {
         price: 0,
-        squareFootage: '',
-        numRooms: ''
+        squareFootage: 0,
+        numRooms: 0,
+        predictedPrice: 0,
       }
     },
     computed: {},
     methods: {
+      nux() {
+        tf.tensor([1, 2, 3, 4]).print();
+      },
       foo(numRooms, squareFootage) {
-        return tf.tidy(()=>{
+        return tf.tidy(() => {
           const a = tf.tensor([Number.parseInt(numRooms)])
           const b = tf.variable(tf.scalar(Number.parseInt(squareFootage)))
-          const results = a.mul(b);
+          const results = a.add(b);
           results.data().then(results => {
-            // console.log(results[0])
             this.price = results[0]
           })
-      });
+        });
+      },
+      // bar(numRooms, squareFootage) {
+      //   return tf.tidy(() => {
+      //     const model = tf.sequential()
+      //     model.add(tf.layers.dense({
+      //       units: 1,
+      //       inputShape: [2]
+      //     }))
+
+      //     const xs = tf.tensor2d([
+      //       [1, 2],
+      //       [1, 3]
+      //     ], [2, 2])
+      //     const ys = tf.tensor2d([
+      //       [1],
+      //       [2]
+      //     ], [2, 1])
+
+      //     model.compile({
+      //       loss: 'meanSquaredError',
+      //       optimizer: 'sgd'
+      //     })
+
+      //     await model.fit(xs, ys, {epochs: 100, callbacks: {
+      //       onEpochEnd: async (epoch, log) => {
+      //         console.log(`Epoch ${epoch}: loss = ${log.loss}`
+      //         )}
+      //       }
+      //     })
+
+      //     model.predict(tf.tensor2d([5], [1, 1])).print();
+      //     // Train the model using the data.
+          // model.fit(xs, ys, {
+          //   epochs: 1
+          // }).then(() => {
+          //   const output = model.predict(tf.tensor2d([numRooms, squareFootage], [1, 2])).data()
+          //   return output
+          // })
+        // })
+      // }
     }
   }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -94,7 +137,7 @@ p {
   margin-bottom: 24px;
 }
 
-.tf {
+.tf_logo {
   height: 170px;
   width: 170px;
 }

@@ -16,7 +16,7 @@
           <br />
         </form>
         <div class="price">Predicted House Price: {{ price }}</div>
-        <div>{{foo(this.numRooms, this.squareFootage)}}</div>
+        <div>{{normalFoo(this.numRooms, this.squareFootage)}}</div>
         <button @click="randomFoo()" type="button">Random</button>
         <div class="price">Random House Price: {{ randomNumber | displayNum}}</div>
       </div>
@@ -45,6 +45,7 @@
     computed: {},
     methods: {
       randomFoo() {
+        console.log(this.hello)
         return tf.tidy(() => {
           const a = tf.variable(tf.scalar(Math.random()))
           const b = tf.variable(tf.scalar(Math.random()))
@@ -54,7 +55,8 @@
           })
         })
       },
-      foo(numRooms, squareFootage) {
+      normalFoo(numRooms, squareFootage) {
+        const hello = this.hello = "man!"
         return tf.tidy(() => {
           const a = tf.tensor([Number.parseInt(numRooms)])
           const b = tf.variable(tf.scalar(Number.parseInt(squareFootage)))

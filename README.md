@@ -1,5 +1,5 @@
 # Hacktoberfest
-Demo: https://kvn219.github.io/hacktoberfest
+Demo: https://kvn219.github.io/hacktoberfest-frontend
 
 ## Getting Started
 ```

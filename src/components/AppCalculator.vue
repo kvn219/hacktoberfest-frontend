@@ -3,8 +3,8 @@
     <div id="calculator">
       <div class="container">
         <div class="image-container">
-          <img src="../assets/logo.png">
-          <img class="tf_logo" src="../assets/tf_logo.svg.png">
+          <img class="logo" src="../assets/logo.png">
+          <img class="logo" src="../assets/tf_logo.svg.png">
         </div>
         <form action="">
           <h1>House Calculator</h1>
@@ -109,9 +109,9 @@ p {
   margin-bottom: 24px;
 }
 
-.tf_logo {
-  height: 170px;
-  width: 170px;
+.logo {
+  height: 150px;
+  width: 150px;
 }
 
 .image-container {

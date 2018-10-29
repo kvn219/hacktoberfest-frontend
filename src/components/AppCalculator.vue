@@ -171,7 +171,7 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-@media (max-height: 750px) {
+@media (max-height: 700px) {
   body {
     height: 50%;
   }

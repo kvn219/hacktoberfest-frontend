@@ -15,10 +15,14 @@
           <input type="number" name="sqaure-footage" v-model.number="squareFootage" />
           <br />
         </form>
-        <div class="price">Predicted House Price: {{ price }}</div>
-        <div>{{normalFoo(this.numRooms, this.squareFootage)}}</div>
-        <button @click="randomFoo()" type="button">Random</button>
-        <div class="price">Random House Price: {{ randomNumber | displayNum}}</div>
+        <button class="train-button" @click="train()" type="button">Train!!!</button>
+        <button
+          class="predict-button"
+          @click="predict()"
+          type="button"
+          :disabled="!trained"
+          >Predict!!!</button>
+      <div class="price">Predicted Price: {{ results }}</div>
       </div>
     </div>
   </div>
@@ -40,33 +44,30 @@
         numRooms: 0,
         predictedPrice: 0,
         randomNumber: 0.001,
+        results: 0,
+        trained: false,
       }
     },
-    computed: {},
     methods: {
-      randomFoo() {
-        console.log(this.hello)
-        return tf.tidy(() => {
-          const a = tf.variable(tf.scalar(Math.random()))
-          const b = tf.variable(tf.scalar(Math.random()))
-          const results = a.mul(b)
-          results.data().then(results => {
-            this.randomNumber = results[0]
-          })
-        })
+      train() {
+        const model = this.model = tf.sequential()
+        model.add(tf.layers.dense({units: 1, inputShape: [2,]}))
+        model.compile({loss: 'meanSquaredError', optimizer: 'sgd'})
+        const xs = tf.tensor2d([[1, 2], [3, 4], [3, 5], [3, 10]], [4,2])
+        const ys = tf.tensor2d([[1], [3], [5], [7]], [4, 1])
+        model.fit(xs, ys, {epochs: 50}).then(
+          this.trained = true
+        )
       },
-      normalFoo(numRooms, squareFootage) {
-        const hello = this.hello = "man!"
+      predict() {
         return tf.tidy(() => {
-          const a = tf.tensor([Number.parseInt(numRooms)])
-          const b = tf.variable(tf.scalar(Number.parseInt(squareFootage)))
-          const results = a.mul(b);
-          results.data().then(results => {
-            this.price = results[0]
+          const inputs = [[this.numRooms, this.squareFootage]]
+          this.results = this.model.predict(
+            tf.tensor2d(inputs, [1,2])
+            ).dataSync()[0]
           })
-        });
-      },
-  }
+      }
+    }
 }
 </script>
 
@@ -177,5 +178,13 @@ input[type="number"]::-webkit-outer-spin-button {
   body {
     height: 50%;
   }
+}
+
+.train-button {
+  width: 100%;
+}
+
+.predict-button {
+  width: 100%;
 }
 </style>

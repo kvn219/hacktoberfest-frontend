@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0c5aed"],{"3fae":function(a,e,n){"use strict";n.r(e);var c=function(){var a=this,e=a.$createElement,n=a._self._c||e;return n("div",{staticClass:"basic"},[n("AppCalculator")],1)},t=[],s=n("e558"),l={name:"basic",components:{AppCalculator:s["a"]}},i=l,o=n("2877"),u=Object(o["a"])(i,c,t,!1,null,null,null);u.options.__file="Basic.vue";e["default"]=u.exports}}]);
+//# sourceMappingURL=chunk-2d0c5aed.d0df478d.js.map

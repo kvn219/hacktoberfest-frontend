@@ -7,22 +7,17 @@
           <img class="logo" src="../assets/tf_logo.svg.png">
         </div>
         <form action="">
-          <h1>House Calculator</h1>
+          <h2>House Calculator</h2>
           <label for="rooms"># of Rooms</label>
-          <input type="number" name="rooms" v-model.number="numRooms" />
+          <input autofocus autocomplete="off" type="number" name="rooms" v-model.number="numRooms" />
           <br />
           <label for="sqaure-footage">Square Footage</label>
           <input type="number" name="sqaure-footage" v-model.number="squareFootage" />
           <br />
         </form>
-        <button class="train-button" @click="train()" type="button">Train!!!</button>
-        <button
-          class="predict-button"
-          @click="predict()"
-          type="button"
-          :disabled="!trained"
-          >Predict!!!</button>
-      <div class="price">Predicted Price: {{ results }}</div>
+        <button class="button" @click="train()" type="button">Train</button>
+        <button class="button" @click="predict()" type="button">Predict</button>
+        <div class="price">Predicted Price: {{ predictedPrice }}</div>
       </div>
     </div>
   </div>
@@ -39,46 +34,70 @@
     },
     data() {
       return {
-        price: 0,
-        squareFootage: 0,
-        numRooms: 0,
-        predictedPrice: 0,
-        randomNumber: 0.001,
-        results: 0,
+        predictedPrice: null,
+        squareFootage: null,
+        numRooms: null,
         trained: false,
       }
     },
     methods: {
-      train() {
+      async train() {
         const model = this.model = tf.sequential()
-        model.add(tf.layers.dense({units: 1, inputShape: [2,]}))
-        model.compile({loss: 'meanSquaredError', optimizer: 'sgd'})
-        const xs = tf.tensor2d([[1, 2], [3, 4], [3, 5], [3, 10]], [4,2])
-        const ys = tf.tensor2d([[1], [3], [5], [7]], [4, 1])
-        model.fit(xs, ys, {epochs: 50}).then(
-          this.trained = true
-        )
+        model.add(tf.layers.dense({
+          units: 1,
+          inputShape: [2]
+        }))
+        model.compile({
+          loss: 'meanSquaredError',
+          optimizer: 'sgd'
+        })
+        const xs = tf.tensor2d([
+          [1, 2],
+          [3, 4],
+          [3, 5],
+          [3, 10],
+          [1, 1]
+        ])
+        const ys = tf.tensor2d([
+          [1],
+          [1],
+          [3],
+          [6],
+          [8]
+        ])
+
+        const epochs = 10
+
+        for (let i=1; i<epochs+1; i++) {
+          const results = await model.fit(xs, ys, {batchSize: 1, epochs: epochs})
+          const loss = results.history.loss[0]
+          console.log(`Loss ${i}/${epochs}:\t${loss}`)
+        }
+
       },
       predict() {
         return tf.tidy(() => {
-          const inputs = [[this.numRooms, this.squareFootage]]
-          this.results = this.model.predict(
-            tf.tensor2d(inputs, [1,2])
-            ).dataSync()[0]
-          })
+          const inputs = [
+            [this.numRooms, this.squareFootage]
+          ]
+          this.predictedPrice = this.model.predict(
+            tf.tensor2d(inputs, [1, 2])
+          ).dataSync()[0]
+        })
       }
     }
-}
+  }
 </script>
 
 <style lang="scss" scoped>
-* {
-  box-sizing: border-box;
+[v-cloak] {
+  display: none;
 }
 
-html {
-  font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
+* {
+  box-sizing: border-box;
+  outline: none;
+  transition: all 200ms ease;
 }
 
 body {
@@ -180,11 +199,31 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 }
 
-.train-button {
+.button {
+  border: none;
+  background: #7185ec;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.2);
+  height: 40px;
   width: 100%;
+  margin-bottom: 10px;
 }
 
-.predict-button {
-  width: 100%;
+button:hover {
+  background-color: #586cd8;
+}
+
+button:active {
+  position: relative;
+  top: 1px;
+  left: 1px;
+  box-shadow: none;
 }
 </style>

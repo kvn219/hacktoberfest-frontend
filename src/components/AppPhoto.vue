@@ -5,15 +5,12 @@
         <h3>Image Classification w/ Taqadam</h3>
         <input type="file" @change="onFileChanged" accept="image/*">
         <div>
-          <div class="image-preview" v-if="inputImage.length > 0">
-            <img id="img" class="preview" :src="inputImage" height="513" width="513">
-          </div>
-          <div class="image-preview" v-else>
-            <img class="preview" src="../assets/tq_logo.png">
+          <div class="image-preview">
+            <img id="kvn" class="preview" :src="inputImage" height="513" width="513">
           </div>
           <div class="score" v-if="inputImage">Score: {{ this.score }}</div>
         </div>
-        <button @click="predict_fn">Push</button>
+        <button @click="predict_fn">PushFoo</button>
       </div>
     </div>
   </div>
@@ -28,12 +25,16 @@ export default {
   data() {
     return {
       selectedFile: null,
-      inputImage: "",
       score: null,
-      model: null
+      model: null,
+      inputImage: "",
+      foo: null
     };
   },
   methods: {
+    placeholderImage() {
+      return "../assets/tq_logo.png";
+    },
     onFileChanged(event) {
       var input = event.target;
       if (input.files && input.files[0]) {
@@ -44,29 +45,21 @@ export default {
         reader.readAsDataURL(input.files[0]);
       }
     },
-    async loadMobilenet() {
-      const url =
-        "https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json";
-      const mobilenet = await tf.loadModel(url);
-      const layer = mobilenet.getLayer("conv_pw_13_relu");
-      this.model = tf.model({
-        inputs: mobilenet.inputs,
-        outputs: layer.output
-      });
+    async predict_fn() {
+      var image = document.getElementById("kvn");
+      console.log("cool prediction", image);
+      const mybool = await this.randomFoo();
+      console.log("im sloower", mybool);
+      console.log("im faster?");
     },
-    predict_fn() {
-      // const img = document.getElementById("img");
-      // console.log(model);
-      // const predictions = model.classify(img);
-      // console.log("Predictions: ");
-      // console.log(predictions);
-      // this.score = Math.random();
-      console.log("this.input", this.inputImage, this);
+    randomFoo() {
+      setTimeout(() => {
+        console.log("hi im waiting");
+      }, 2000);
+      return true;
     }
   },
-  mounted() {
-    this.loadMobilenet();
-  }
+  mounted() {}
 };
 </script>
 

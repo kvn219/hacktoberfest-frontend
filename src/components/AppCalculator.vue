@@ -16,7 +16,7 @@
           <br />
         </form>
         <button class="button" @click="train()" type="button">Train</button>
-        <button class="button" @click="predict()" type="button">Predict</button>
+        <button class="button" @click="predict()" :disabled="!trained" type="button">Predict</button>
         <div class="price">Predicted Price: {{ predictedPrice }}</div>
       </div>
     </div>
@@ -73,7 +73,7 @@
           const loss = results.history.loss[0]
           console.log(`Loss ${i}/${epochs}:\t${loss}`)
         }
-
+        this.trained = true
       },
       predict() {
         return tf.tidy(() => {

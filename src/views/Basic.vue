@@ -1,17 +1,17 @@
 <template>
   <div class="basic">
-    <AppCalculator></AppCalculator>
+    <AppPhoto></AppPhoto>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import AppCalculator from '@/components/AppCalculator.vue'
+import AppPhoto from '@/components/AppPhoto.vue'
 
 export default {
   name: 'basic',
   components: {
-    AppCalculator
+    AppPhoto
   }
 }
 </script>
